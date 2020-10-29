@@ -98,5 +98,6 @@ def readExample(filename):
         else:
             break
     f.close()
-readExample('20190701.txt')
+#readExample('20190701.txt')
+print('hello world')
 #r=RoadInformation(1,2,3,4,5,6,7,8,9)
