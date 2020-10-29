@@ -1,7 +1,5 @@
 
 
-
-print('hello world')
 class SlideData:
     time=0
     speed=0
@@ -70,18 +68,63 @@ class RoadInformation:
     width=0
     next=[]
 
-    def __init__(self, linkid,length,direction,pathclass,speedclass,laneum,speedlimit,level,width):
-        self.linkid=linkid
-        self.length=length
-        self.direction=direction
-        self.pathclass=pathclass
-        self.speedclass=speedclass
-        self.laneum=laneum
-        self.speedlimit=speedlimit
-        self.level=level
-        self.width=width
-        print(self.linkid,self.width)
+    def __init__(self, line):
+        if line!='':
+            a=line.split()
+            self.linkid=int(a[0])
+            self.length=int(a[1])
+            self.direction=int(a[2])
+            self.pathclass=int(a[3])
+            self.speedclass=int(a[4])
+            self.laneum=int(a[5])
+            self.speedlimit=float(a[6])
+            self.level=int(a[7])
+            self.width=int(a[8])
+        else:
+            tmp=1
 
+class RoadLinkeInformation():
+    link=[]
+    index=0
+    def __init__(self,line):
+        if line!='':
+            a=line.split('\t')
+            self.index=int(a[0])
+            b=a[1].split(',')
+            self.link=[]
+            for s in b:
+                self.link.append(int(s))
+        else:
+            self.index = 0
+            self.link = []
+def readRoadInformation(filename):
+    f = open(filename, "r")
+    index = 0
+    roadinfo=[RoadInformation('') for i in range(700000)]
+    while True:
+        line = f.readline()
+        if line:
+            tmp=RoadInformation(line)
+            roadinfo[tmp.linkid]=tmp
+            index = index + 1
+        else:
+            break
+    f.close()
+    return roadinfo
+def readRoadLinkInformation(filename):
+    f = open(filename, "r")
+    index = 0
+    roadlink=[RoadLinkeInformation('') for i in range(700000)]
+    while True:
+        line = f.readline()
+        if line:
+            tmp=RoadLinkeInformation(line)
+            roadlink[tmp.index]=tmp
+            index = index + 1
+        else:
+            break
+    f.close()
+    return roadlink
 
 def readExample(filename):
     example=[]
@@ -98,6 +141,16 @@ def readExample(filename):
         else:
             break
     f.close()
+    return example
+def readData(fileRoadLink,fileRoadInfo,fileExample):
+    roadlink=readRoadLinkInformation(fileRoadLink)
+    roadinfo=readRoadInformation(fileRoadInfo)
+    example=readExample(fileExample)
+    return roadlink,roadinfo,example
 #readExample('20190701.txt')
 print('hello world')
 #r=RoadInformation(1,2,3,4,5,6,7,8,9)
+a=readRoadLinkInformation('input/roadlink.txt')
+b=readRoadInformation('input/roadinformation.txt')
+print(a[0].link,a[250000].link)
+print(b[0].speedlimit,b[250000].speedlimit)
