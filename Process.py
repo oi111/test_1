@@ -19,38 +19,45 @@ def weighted_f1_score(label_data, pred_data):
 def SplitData():
     trainset = []
     testset = []
+    for i in range(int(len(data)*0.8)):
+        trainset.append(data[i])
+    for i in range(int(len(data)*0.8),int(len(data)*1)):
+        testset.append(data[i])
     return trainset, testset
+def buildExample(roadlink,roadinfo,his):
+    ret=[]
+    for h in his:
+        e=Example(h,roadinfo[h.linkid])
+        ret.append(e)
+    return ret
 
-
-def getData():
+def getData(roadlink,roadinfo,his):
     trainset = []
     testset = []
-
+    data=buildExample(roadlink,roadinfo,his)
     trainset,testset=SplitData(data)
     return trainset, testset
-
-
-def process():
-    trainset, testset = getData()
-    model = getModel('1')
-    Train(model, trainset)
-    Test(model, testset)
-
-
-def getModel(model_name):
-    model = ''
-    if model_name == '1':
-        print(1)
-    if model_name == '2':
-        print(2)
-    Train(model, trainset)
-    Test(model, testset)
-
 
 def Train(model, trainset):
     model.train(trainset)
 
 def Test(model,testset):
     ans=model.test(testset)
+
+
+def getModel(model_name):
+    model = ''
+    if model_name == '1':
+        model=Model_XGBboost()
+    if model_name == '2':
+        print(2)
+    Train(model, trainset)
+    Test(model, testset)
+def process(fileRoadLink,fileRoadInfo,fileHisData):
+    roadlink, roadinfo, his=readData(fileRoadLink,fileRoadInfo,fileHisData)
+    trainset, testset = getData(roadlink,roadinfo,his)
+    model = getModel('1')
+    Train(model, trainset)
+    Test(model, testset)
 
 

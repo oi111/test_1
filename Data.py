@@ -66,7 +66,6 @@ class RoadInformation:
     speedlimit=0
     level=0
     width=0
-    next=[]
 
     def __init__(self, line):
         if line!='':
@@ -126,7 +125,7 @@ def readRoadLinkInformation(filename):
     f.close()
     return roadlink
 
-def readExample(filename):
+def readHisData(filename):
     example=[]
     f=open(filename,"r")
     index=0
@@ -142,11 +141,11 @@ def readExample(filename):
             break
     f.close()
     return example
-def readData(fileRoadLink,fileRoadInfo,fileExample):
+def readData(fileRoadLink,fileRoadInfo,fileHisData):
     roadlink=readRoadLinkInformation(fileRoadLink)
     roadinfo=readRoadInformation(fileRoadInfo)
-    example=readExample(fileExample)
-    return roadlink,roadinfo,example
+    his=readHisData(fileHisData)
+    return roadlink,roadinfo,his
 #readExample('20190701.txt')
 print('hello world')
 #r=RoadInformation(1,2,3,4,5,6,7,8,9)

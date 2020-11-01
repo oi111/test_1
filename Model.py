@@ -8,18 +8,22 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import roc_auc_score, average_precision_score
 import numpy as np
 from sklearn.linear_model import SGDClassifier
+from xgboost import XGBClassifier
+
 
 
 class Model_XGBboost:
     model=''
     def __init__(self):
+        model = XGBClassifier()  # 载入模型（模型命名为model)
         print(1)
     def initModel(self):
         model=1
     def train(self,feature,label):
-        model.fit(feature,label)
+        model.fit(feature, label)
     def test(self,feature):
-        model.predict(feature)
+        y_pred = model.predict(feature)
+        return y_pred
 
 
 class Model_XGBboost2:
