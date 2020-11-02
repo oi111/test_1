@@ -1,4 +1,3 @@
-from sklearn.linear_model import LogisticRegression as LR
 from sklearn.svm import SVC
 from sklearn.metrics import f1_score
 from sklearn.multiclass import OneVsRestClassifier
@@ -60,4 +59,7 @@ def process(fileRoadLink,fileRoadInfo,fileHisData):
     Train(model, trainset)
     Test(model, testset)
 
-
+fileRoadLink=''
+fileRoadInfo=''
+fileHisData=''
+roadlink, roadinfo, his=readData(fileRoadLink,fileRoadInfo,fileHisData)
