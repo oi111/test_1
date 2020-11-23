@@ -36,8 +36,8 @@ class HisData:
     def __init__(self, line):
         a=line.split(';')
         b=a[0].split(' ')
-        print(a[0])
-        print(b)
+       # print(a[0])
+        #print(b)
         self.linkid=int(b[0])
         self.label=int(b[1])
         self.current_slice_id=int(b[2])
@@ -51,7 +51,7 @@ class HisData:
             c=a[i].split(' ')
             for s in c:
                 self.history_feature.append(SlideData(s))
-        print(self.linkid,self.label,self.current_slice_id,self.future_slice_id)
+       # print(self.linkid,self.label,self.current_slice_id,self.future_slice_id)
 
 #f=HisData('516999 1 209 230;205:32.20,28.20,1,4 206:28.40,26.70,1,4 207:26.90,23.90,1,7 208:26.60,23.90,1,7 209:27.70,23.60,1,6;230:35.10,29.80,1,14 231:34.40,29.10,1,15 232:34.70,28.50,1,12 233:33.80,28.20,1,7 234:33.60,25.60,1,4;230:38.20,32.70,1,15 231:37.50,33.80,1,17 232:36.30,34.70,1,14 233:35.40,37.70,1,11 234:34.30,33.50,1,10;230:42.10,29.40,1,11 231:42.00,29.80,1,11 232:38.20,29.90,1,11 233:33.60,30.30,1,8 234:32.80,30.60,1,9;230:34.70,31.10,1,12 231:38.00,34.30,1,13 232:39.40,34.20,1,14 233:40.50,29.10,1,9 234:37.40,30.80,1,8')
 
@@ -109,6 +109,7 @@ def readRoadInformation(filename):
         else:
             break
     f.close()
+    print('readRoadInformation')
     return roadinfo
 def readRoadLinkInformation(filename):
     f = open(filename, "r")
@@ -123,6 +124,7 @@ def readRoadLinkInformation(filename):
         else:
             break
     f.close()
+    print('readRoadLinkInformation')
     return roadlink
 
 def readHisData(filename):
@@ -134,22 +136,25 @@ def readHisData(filename):
         if line:
             example.append(HisData(line))
             index=index+1
-            print(index)
-            if index>10:
-                break
+          #  print(index)
+          #  if index>10:
+           #     break
         else:
             break
     f.close()
+    print('have  readHisData')
     return example
 def readData(fileRoadLink,fileRoadInfo,fileHisData):
+    print('begin read data')
     roadlink=readRoadLinkInformation(fileRoadLink)
     roadinfo=readRoadInformation(fileRoadInfo)
     his=readHisData(fileHisData)
     return roadlink,roadinfo,his
+#def testData()
 #readExample('20190701.txt')
-print('hello world')
+#print('hello world')
 #r=RoadInformation(1,2,3,4,5,6,7,8,9)
-a=readRoadLinkInformation('input/roadlink.txt')
-b=readRoadInformation('input/roadinformation.txt')
-print(a[0].link,a[250000].link)
-print(b[0].speedlimit,b[250000].speedlimit)
+#a=readRoadLinkInformation('input/roadlink.txt')
+#b=readRoadInformation('input/roadinformation.txt')
+#print(a[0].link,a[250000].link)
+#print(b[0].speedlimit,b[250000].speedlimit)

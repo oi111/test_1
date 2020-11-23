@@ -8,6 +8,9 @@ from sklearn.metrics import roc_auc_score, average_precision_score
 import numpy as np
 from sklearn.linear_model import SGDClassifier
 
+import Data as da
+import Feature as ft
+
 
 def weighted_f1_score(label_data, pred_data):
     f1 = f1_score(y_true=label_data, y_pred=pred_data, average=None)
@@ -15,7 +18,7 @@ def weighted_f1_score(label_data, pred_data):
     return f1
 
 
-def SplitData():
+def SplitData(data):
     trainset = []
     testset = []
     for i in range(int(len(data)*0.8)):
@@ -26,8 +29,11 @@ def SplitData():
 def buildExample(roadlink,roadinfo,his):
     ret=[]
     for h in his:
-        e=Example(h,roadinfo[h.linkid])
+        e=ft.Example()
+        e.AddFeature(h,roadinfo[h.linkid])
         ret.append(e)
+    print(len(ret))
+    print('have end buildExample')
     return ret
 
 def getData(roadlink,roadinfo,his):
@@ -59,7 +65,24 @@ def process(fileRoadLink,fileRoadInfo,fileHisData):
     Train(model, trainset)
     Test(model, testset)
 
-fileRoadLink=''
-fileRoadInfo=''
-fileHisData=''
-roadlink, roadinfo, his=readData(fileRoadLink,fileRoadInfo,fileHisData)
+fileRoadLink='input/roadlink.txt'
+fileRoadInfo='input/roadinformation.txt'
+fileHisData='input/20190701.txt'
+roadlink, roadinfo, his=da.readData(fileRoadLink,fileRoadInfo,fileHisData)
+
+
+#data=buildExample(roadlink,roadinfo,his)
+#trainset,testset=SplitData(data)
+#print(len(trainset),len(testset))
+trainset, testset = getData(roadlink,roadinfo,his)
+#e=ft.Example()
+
+#roadlink[0].link
+#print((ft.Example)(roadlink[0]).linkid)
+#print(roadlink[0].length)
+#print(roadlink[0])
+
+#e.AddFeature_RoadInfo(roadinfo[0])
+#e.AddFeature_His(his[0])
+#e.AddFeature(roadinfo[0],his[0])
+#print(len(roadlink),len(roadinfo),len(his))

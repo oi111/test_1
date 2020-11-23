@@ -1,4 +1,5 @@
 
+import Data
 
 class Example:
     feature=[]
@@ -6,27 +7,37 @@ class Example:
     def __init__(self):
         self.feature=[]
         self.label=0
-    def AddFeature(self,r1,h1):
-        AddFeature_RoadInfo(r1)
-        AddFeature_His(h1)
     def AddFeature_RoadInfo(self, r):
-        feature.append(r.length)
-        feature.append(r.direction)
-        feature.append(r.pathclass)
-        feature.append(r.speedclass)
-        feature.append(r.lanenum)
-        feature.append(r.speedlimit)
-        feature.append(r.level)
-        feature.append(r.width)
+        #print('AddFeature_RoadInfo')
+        #print(r)
+        #print(r.pathclass)
+        self.feature.append(r.length)
+        self.feature.append(r.direction)
+        self.feature.append(r.pathclass)
+        self.feature.append(r.speedclass)
+        self.feature.append(r.lanenum)
+        self.feature.append(r.speedlimit)
+        self.feature.append(r.level)
+        self.feature.append(r.width)
         #self.feature
     def AddFeature_His(self,r):
-        feature.append(h.current_slice_id)
-        feature.append(h.future_slice_id)
+        self.feature.append(r.current_slice_id)
+        self.feature.append(r.future_slice_id)
         for p in r.recent_feature:
-            feature.append(p.speed)
-            feature.append(p.eta_speed)
-            feature.append(p.road_label)
+            self.feature.append(p.speed)
+            self.feature.append(p.eta_speed)
+            self.feature.append(p.road_label)
         for p in r.history_feature:
-            feature.append(p.speed)
-            feature.append(p.eta_speed)
-            feature.append(p.road_label)
+            self.feature.append(p.speed)
+            self.feature.append(p.eta_speed)
+            self.feature.append(p.road_label)
+       # print('have end AddFeature_His')
+    def AddFeature(self,h1,r1):
+        #print(r1)
+        #print(r1.pathclass)
+        self.AddFeature_His(h1)
+        self.AddFeature_RoadInfo(r1)
+        #AddFeature_RoadInfo()
+        #AddFeature_His(h1)
+        #print('have end addfeature')
+
