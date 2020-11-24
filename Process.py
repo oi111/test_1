@@ -10,6 +10,7 @@ from sklearn.linear_model import SGDClassifier
 
 import Data as da
 import Feature as ft
+import Model as md
 
 
 def weighted_f1_score(label_data, pred_data):
@@ -52,16 +53,15 @@ def Test(model,testset):
 
 def getModel(model_name):
     model = ''
-    if model_name == '1':
+    if model_name == 'xgb':
         model=Model_XGBboost()
     if model_name == '2':
         print(2)
-    Train(model, trainset)
-    Test(model, testset)
+    return model
 def process(fileRoadLink,fileRoadInfo,fileHisData):
     roadlink, roadinfo, his=readData(fileRoadLink,fileRoadInfo,fileHisData)
     trainset, testset = getData(roadlink,roadinfo,his)
-    model = getModel('1')
+    model = getModel('xgb')
     Train(model, trainset)
     Test(model, testset)
 
