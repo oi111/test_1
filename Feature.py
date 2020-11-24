@@ -3,10 +3,10 @@ import Data
 
 class Example:
     feature=[]
-    label=0
+    label=[]
     def __init__(self):
         self.feature=[]
-        self.label=0
+        self.label=[0,0,0]
     def AddFeature_RoadInfo(self, r):
         #print('AddFeature_RoadInfo')
         #print(r)
@@ -31,6 +31,11 @@ class Example:
             self.feature.append(p.speed)
             self.feature.append(p.eta_speed)
             self.feature.append(p.road_label)
+        #print(r.label)
+        if r.label>=1 and r.label<=3:
+            self.label[r.label-1]=1
+        else:
+            print(r.label)
        # print('have end AddFeature_His')
     def AddFeature(self,h1,r1):
         #print(r1)

@@ -20,19 +20,27 @@ def weighted_f1_score(label_data, pred_data):
 
 
 def SplitData(data):
-    trainset = []
-    testset = []
+    trainX= []
+    trainY=[]
+    testX = []
+    testY=[]
     for i in range(int(len(data)*0.8)):
-        trainset.append(data[i])
+        trainX.append(data[i].feature)
+        trainY.append(data[i].label)
     for i in range(int(len(data)*0.8),int(len(data)*1)):
-        testset.append(data[i])
-    return trainset, testset
+        testX.append(data[i].feature)
+        testY.append(data[i].label)
+    return trainX,trainY,testX,testY
 def buildExample(roadlink,roadinfo,his):
     ret=[]
+    #retY=[]
     for h in his:
         e=ft.Example()
         e.AddFeature(h,roadinfo[h.linkid])
         ret.append(e)
+        #tmp=[0,0,0]
+        #tmp[e.label]=1
+        #retY.append(tmp)
     print(len(ret))
     print('have end buildExample')
     return ret
@@ -41,8 +49,8 @@ def getData(roadlink,roadinfo,his):
     trainset = []
     testset = []
     data=buildExample(roadlink,roadinfo,his)
-    trainset,testset=SplitData(data)
-    return trainset, testset
+    trainX,trainY,testX,testY=SplitData(data)
+    return trainX,trainY,testX,testY
 
 def Train(model, trainset):
     model.train(trainset)
@@ -54,27 +62,34 @@ def Test(model,testset):
 def getModel(model_name):
     model = ''
     if model_name == 'xgb':
-        model=Model_XGBboost()
+        model=md.Model_XGBboost()
     if model_name == '2':
         print(2)
     return model
 def process(fileRoadLink,fileRoadInfo,fileHisData):
-    roadlink, roadinfo, his=readData(fileRoadLink,fileRoadInfo,fileHisData)
-    trainset, testset = getData(roadlink,roadinfo,his)
+    roadlink, roadinfo, his=da.readData(fileRoadLink,fileRoadInfo,fileHisData)
+    trainX,trainY,testX,testY = getData(roadlink,roadinfo,his)
+    print('========================')
     model = getModel('xgb')
-    Train(model, trainset)
-    Test(model, testset)
+    #Train(model, trainset)
+    #Test(model, testset)
+
+
+
+
 
 fileRoadLink='input/roadlink.txt'
 fileRoadInfo='input/roadinformation.txt'
 fileHisData='input/20190701.txt'
-roadlink, roadinfo, his=da.readData(fileRoadLink,fileRoadInfo,fileHisData)
-
-
+#roadlink, roadinfo, his=da.readData(fileRoadLink,fileRoadInfo,fileHisData)
+#trainX,trainY,testX,testY = getData(roadlink,roadinfo,his)
+process(fileRoadLink,fileRoadInfo,fileHisData)
 #data=buildExample(roadlink,roadinfo,his)
 #trainset,testset=SplitData(data)
 #print(len(trainset),len(testset))
-trainset, testset = getData(roadlink,roadinfo,his)
+#trainset, testset = getData(roadlink,roadinfo,his)
+b=[0,0,0]
+print(b)
 #e=ft.Example()
 
 #roadlink[0].link
