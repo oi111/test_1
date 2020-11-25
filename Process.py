@@ -52,11 +52,12 @@ def getData(roadlink,roadinfo,his):
     trainX,trainY,testX,testY=SplitData(data)
     return trainX,trainY,testX,testY
 
-def Train(model, trainset):
-    model.train(trainset)
+def Train(model, trainX,trainY,valX,valY):
+    model.train(trainX,trainY,valX,valY)
 
-def Test(model,testset):
-    ans=model.test(testset)
+def Test(model,testX,testY):
+    ans=model.test(testX)
+
 
 
 def getModel(model_name):
@@ -71,7 +72,7 @@ def process(fileRoadLink,fileRoadInfo,fileHisData):
     trainX,trainY,testX,testY = getData(roadlink,roadinfo,his)
     print('========================')
     model = getModel('xgb')
-    #Train(model, trainset)
+    Train(model, trainX,trainY,testX,testY)
     #Test(model, testset)
 
 
