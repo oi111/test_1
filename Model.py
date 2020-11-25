@@ -23,27 +23,47 @@ class Model_XGBboost:
         _learning_rate = 0.01
         _subsample = 0.7
         _colsample_bytree = 0.7
-        self.model = XGBClassifier(n_estimators=10, max_depth=_max_depth, learning_rate=_learning_rate,
-                                  objective='multi:softmax', subsample=_subsample, colsample_bytree=_colsample_bytree)
+        self.model = XGBClassifier(n_estimators=50, max_depth=_max_depth, learning_rate=_learning_rate,
+                                  objective='multi:softmax', subsample=_subsample, colsample_bytree=_colsample_bytree,num_class=3)
         print(self.model)
     def train(self,trainX,trainY,valX,valY):
         print(trainX[0],trainY[0])
+        print(valX[0],valY[0])
         #self.model.fit(trainX, trainY,eval_set=[(valX,valY)], eval_metric='error', verbose=True)
-        self.model.fit(trainX, trainY, eval_metric='error', verbose=True)
+        self.model.fit(np.array(trainX), np.array(trainY),eval_metric='error', verbose=True)
         print('have train')
-    def test(self,testX):
-        y_pred = self.model.predict_proba(X_test)[:, 1]
+    def test(self,testX,testY):
+        y_pred = self.model.predict_proba(np.array(testX))[:, 1]
+        print(y_pred)
+        print(testY)
+
         #y_pred = model.predict(feature)
         return y_pred
 
-
+#from sklearn import datasets
+#from sklearn.model_selection import train_test_split
+#from sklearn.metrics import accuracy_score
+#from xgboost import XGBClassifier
 #md=Model_XGBboost()
 _max_depth = 8
 _learning_rate = 0.01
 _subsample = 0.7
 _colsample_bytree = 0.7
 #model=XGBClassifier(n_estimators=500, max_depth=_max_depth, learning_rate=_learning_rate,
- #                                 objective='multi:softmax', subsample=_subsample, colsample_bytree=_colsample_bytree)
+ #                                 objective='multi:softmax', subsample=_subsample, colsample_bytree=_colsample_bytree,num_class=3)
+
+#digits = datasets.load_digits()
+
+#x_train, x_test, y_train, y_test = train_test_split(digits.data,digits.target,test_size=0.3,random_state=33)
+
+#trainX=np.array([[1,2,3,4],[2 ,3, 4, 5]])
+#trainY=np.array([2,1])
+#print(trainX)
+#print(trainY)
+
+#print(x_train)
+#print(y_train)
+#model.fit(trainX,trainY,eval_metric='error', verbose=True)
 #print(model)
 #from sklearn import preprocessing
 #lbl = preprocessing.LabelEncoder()

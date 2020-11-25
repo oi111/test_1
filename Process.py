@@ -56,7 +56,7 @@ def Train(model, trainX,trainY,valX,valY):
     model.train(trainX,trainY,valX,valY)
 
 def Test(model,testX,testY):
-    ans=model.test(testX)
+    ans=model.test(testX,testY)
 
 
 
@@ -73,7 +73,7 @@ def process(fileRoadLink,fileRoadInfo,fileHisData):
     print('========================')
     model = getModel('xgb')
     Train(model, trainX,trainY,testX,testY)
-    #Test(model, testset)
+    Test(model, testX,testY)
 
 
 
