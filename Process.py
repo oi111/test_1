@@ -11,54 +11,32 @@ from sklearn.linear_model import SGDClassifier
 import Data as da
 import Feature as ft
 import Model as md
+import random
+import ProcessTrainData as ptd
 
 
 def weighted_f1_score(label_data, pred_data):
     f1 = f1_score(y_true=label_data, y_pred=pred_data, average=None)
     f1 = 0.2 * f1[0] + 0.2 * f1[1] + 0.6 * f1[2]
     return f1
-
-
-def SplitData(data):
-    trainX= []
-    trainY=[]
-    testX = []
-    testY=[]
-    for i in range(int(len(data)*0.8)):
-        trainX.append(data[i].feature)
-        trainY.append(data[i].label)
-    for i in range(int(len(data)*0.8),int(len(data)*1)):
-        testX.append(data[i].feature)
-        testY.append(data[i].label)
-    return trainX,trainY,testX,testY
-def buildExample(roadlink,roadinfo,his):
+def calLabel(pred_y):
     ret=[]
-    #retY=[]
-    for h in his:
-        e=ft.Example()
-        e.AddFeature(h,roadinfo[h.linkid])
-        ret.append(e)
-        #tmp=[0,0,0]
-        #tmp[e.label]=1
-        #retY.append(tmp)
-    print(len(ret))
-    print('have end buildExample')
+    print(pred_y)
+    for i in range(len(pred_y)):
+        if pred_y[i][0]>pred_y[i][1] and pred_y[i][0]>pred_y[i][2]:
+            ret.append(0)
+        if pred_y[i][1]>pred_y[i][0] and pred_y[i][1]>pred_y[i][2]:
+            ret.append(1)
+        if pred_y[i][2]>pred_y[i][0] and pred_y[i][2]>pred_y[i][1]:
+            ret.append(2)
     return ret
-
-def getData(roadlink,roadinfo,his):
-    trainset = []
-    testset = []
-    data=buildExample(roadlink,roadinfo,his)
-    trainX,trainY,testX,testY=SplitData(data)
-    return trainX,trainY,testX,testY
 
 def Train(model, trainX,trainY,valX,valY):
     model.train(trainX,trainY,valX,valY)
 
 def Test(model,testX,testY):
-    ans=model.test(testX,testY)
-
-
+    pred_y=model.test(testX,testY)
+    return pred_y
 
 def getModel(model_name):
     model = ''
@@ -69,11 +47,14 @@ def getModel(model_name):
     return model
 def process(fileRoadLink,fileRoadInfo,fileHisData):
     roadlink, roadinfo, his=da.readData(fileRoadLink,fileRoadInfo,fileHisData)
-    trainX,trainY,testX,testY = getData(roadlink,roadinfo,his)
+    trainX,trainY,testX,testY = ptd.getData(roadlink,roadinfo,his)
     print('========================')
     model = getModel('xgb')
     Train(model, trainX,trainY,testX,testY)
-    Test(model, testX,testY)
+    pred_y=Test(model, testX,testY)
+    pred_y=calLabel(pred_y)
+    score=weighted_f1_score(testY,pred_y)
+    print(score)
 
 
 
@@ -81,16 +62,15 @@ def process(fileRoadLink,fileRoadInfo,fileHisData):
 
 fileRoadLink='input/roadlink.txt'
 fileRoadInfo='input/roadinformation.txt'
-fileHisData='input/20190701.txt'
+fileHisData='input/201907'
 #roadlink, roadinfo, his=da.readData(fileRoadLink,fileRoadInfo,fileHisData)
 #trainX,trainY,testX,testY = getData(roadlink,roadinfo,his)
-process(fileRoadLink,fileRoadInfo,fileHisData)
+#process(fileRoadLink,fileRoadInfo,fileHisData)
 #data=buildExample(roadlink,roadinfo,his)
 #trainset,testset=SplitData(data)
 #print(len(trainset),len(testset))
 #trainset, testset = getData(roadlink,roadinfo,his)
-b=[0,0,0]
-print(b)
+
 #e=ft.Example()
 
 #roadlink[0].link

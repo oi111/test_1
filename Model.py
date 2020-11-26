@@ -25,18 +25,26 @@ class Model_XGBboost:
         _colsample_bytree = 0.7
         self.model = XGBClassifier(n_estimators=50, max_depth=_max_depth, learning_rate=_learning_rate,
                                   objective='multi:softmax', subsample=_subsample, colsample_bytree=_colsample_bytree,num_class=3)
-        print(self.model)
+        #print(self.model)
     def train(self,trainX,trainY,valX,valY):
         print(trainX[0],trainY[0])
         print(valX[0],valY[0])
         #self.model.fit(trainX, trainY,eval_set=[(valX,valY)], eval_metric='error', verbose=True)
-        self.model.fit(np.array(trainX), np.array(trainY),eval_metric='error', verbose=True)
+        for i in range(len(valY)):
+            if valY[i]>3:
+                print(i,valY[i])
+        print('----------------------')
+        for i in range(len(trainY)):
+            if trainY[i]>3:
+                print(i,trainY[i])
+        self.model.fit(np.array(trainX), np.array(trainY),eval_set=[(np.array(valX),np.array(valY))],eval_metric='merror', verbose=True)
         print('have train')
     def test(self,testX,testY):
-        y_pred = self.model.predict_proba(np.array(testX))[:, 1]
+        y_pred = self.model.predict_proba(np.array(testX))#[:, 2]
         print(y_pred)
         print(testY)
-
+        for i in range(1000):
+            print(y_pred[i],testY[i])
         #y_pred = model.predict(feature)
         return y_pred
 
@@ -50,7 +58,7 @@ _learning_rate = 0.01
 _subsample = 0.7
 _colsample_bytree = 0.7
 #model=XGBClassifier(n_estimators=500, max_depth=_max_depth, learning_rate=_learning_rate,
- #                                 objective='multi:softmax', subsample=_subsample, colsample_bytree=_colsample_bytree,num_class=3)
+ #                                 objective='multi:softmax', subsample=_subsample, colsample_bytree=_colsample_bytree,num_class=6)
 
 #digits = datasets.load_digits()
 
@@ -58,12 +66,16 @@ _colsample_bytree = 0.7
 
 #trainX=np.array([[1,2,3,4],[2 ,3, 4, 5]])
 #trainY=np.array([2,1])
+#eval_set=[(x_train,y_train)]
+#print(trainX)
+#print(eval_set)
 #print(trainX)
 #print(trainY)
 
 #print(x_train)
 #print(y_train)
-#model.fit(trainX,trainY,eval_metric='error', verbose=True)
+#model.fit(x_train,y_train,eval_set=[(x_train, y_train)],eval_metric='error', verbose=True)
+#model.fit(x_train,y_train,eval_set=[(x_train,y_train)],eval_metric='merror', verbose=True)
 #print(model)
 #from sklearn import preprocessing
 #lbl = preprocessing.LabelEncoder()

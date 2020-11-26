@@ -33,7 +33,9 @@ class HisData:
     future_slice_id=0
     recent_feature=[]
     history_feature=[]
-    def __init__(self, line):
+    pdate=0
+    def __init__(self, line,pindex):
+        self.pdate=pindex
         a=line.split(';')
         b=a[0].split(' ')
        # print(a[0])
@@ -127,28 +129,43 @@ def readRoadLinkInformation(filename):
     print('readRoadLinkInformation')
     return roadlink
 
-def readHisData(filename):
+def readHisData(filename,pindex):
     example=[]
+    print(filename)
     f=open(filename,"r")
     index=0
     while True:
         line=f.readline()
         if line:
-            example.append(HisData(line))
+            #example.append(HisData(line))
             index=index+1
           #  print(index)
-          #  if index>10:
-           #     break
+            if index%31==0:
+                example.append(HisData(line,pindex))
         else:
             break
     f.close()
     print('have  readHisData')
     return example
+def readAllHisData(filename):
+    example=[]
+    for i in range(1,31):
+        if i<10:
+            fn=filename+'0'+str(i)+'.txt'
+        else:
+            fn=filename+str(i)+'.txt'
+        tmp=readHisData(fn,i)
+        #print(tmp)
+        for p in tmp:
+            example.append(p)
+
+    print('have  readAllHisData')
+    return example
 def readData(fileRoadLink,fileRoadInfo,fileHisData):
     print('begin read data')
     roadlink=readRoadLinkInformation(fileRoadLink)
     roadinfo=readRoadInformation(fileRoadInfo)
-    his=readHisData(fileHisData)
+    his=readAllHisData(fileHisData)
     return roadlink,roadinfo,his
 #def testData()
 #readExample('20190701.txt')
