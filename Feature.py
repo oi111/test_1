@@ -7,14 +7,34 @@ class Example:
     def __init__(self):
         self.feature=[]
         self.label=0
+    def getOneHot(self,val,tot):
+        tmp=[0 for i in range(tot)]
+        tmp[val]=1
+        return tmp
     def AddFeature_RoadInfo(self, r):
         self.feature.append(r.length)
-        self.feature.append(r.direction)
-        self.feature.append(r.pathclass)
-        self.feature.append(r.speedclass)
+
+        tmp=self.getOneHot(r.direction,4)
+        for p in tmp:
+            self.feature.append(p)
+
+        tmp=self.getOneHot(r.pathclass,6)
+        for p in tmp:
+            self.feature.append(p)
+
+        tmp=self.getOneHot(r.speedclass,9)
+        for p in tmp:
+            self.feature.append(p)
+
+
         self.feature.append(r.lanenum)
+
         self.feature.append(r.speedlimit)
-        self.feature.append(r.level)
+
+        tmp=self.getOneHot(r.level,6)
+        for p in tmp:
+            self.feature.append(p)
+        #self.feature.append(r.level)
         self.feature.append(r.width)
     def AddFeature_His(self,r):
         self.feature.append(r.current_slice_id)
@@ -22,11 +42,18 @@ class Example:
         for p in r.recent_feature:
             self.feature.append(p.speed)
             self.feature.append(p.eta_speed)
-            self.feature.append(p.road_label)
+            #self.feature.append(p.road_label)
+            tmp=self.getOneHot(p.road_label, 5)
+            for q in tmp:
+                self.feature.append(q)
+
         for p in r.history_feature:
             self.feature.append(p.speed)
             self.feature.append(p.eta_speed)
-            self.feature.append(p.road_label)
+            #self.feature.append(p.road_label)
+            tmp=self.getOneHot(p.road_label, 5)
+            for q in tmp:
+                self.feature.append(q)
         self.label=r.label-1
 
     def AddFeature_Date(self,pdate):

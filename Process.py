@@ -13,6 +13,7 @@ import Feature as ft
 import Model as md
 import random
 import ProcessTrainData as ptd
+import test as te
 
 
 def weighted_f1_score(label_data, pred_data):
@@ -45,15 +46,18 @@ def getModel(model_name):
     if model_name == '2':
         print(2)
     return model
-def process(fileRoadLink,fileRoadInfo,fileHisData):
+def process(fileRoadLink,fileRoadInfo,fileHisData,fileFinalData):
     roadlink, roadinfo, his=da.readData(fileRoadLink,fileRoadInfo,fileHisData)
     trainX,trainY,testX,testY = ptd.getData(roadlink,roadinfo,his)
+    te.testNullId(his)
     print('========================')
     model = getModel('xgb')
     Train(model, trainX,trainY,testX,testY)
     pred_y=Test(model, testX,testY)
     pred_y=calLabel(pred_y)
     score=weighted_f1_score(testY,pred_y)
+
+    #finalData=ptd.getTestData(roadlink, roadinfo, fileFinalData)
     print(score)
 
 
