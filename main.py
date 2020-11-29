@@ -14,7 +14,7 @@ if __name__ == '__main__':
     fileRoadLink='input/roadlink.txt'
     fileRoadInfo='input/roadinformation.txt'
     fileHisData='input/201907'
-    finalData=''
+    finalData='input/20190801_testdata.txt'
 #roadlink, roadinfo, his=da.readData(fileRoadLink,fileRoadInfo,fileHisData)
 #trainX,trainY,testX,testY = getData(roadlink,roadinfo,his)
     pr.process(fileRoadLink,fileRoadInfo,fileHisData,finalData)
