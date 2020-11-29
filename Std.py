@@ -20,7 +20,6 @@ class RoadStdInfo:
         for p in his:
             if p.label == 1 or p.label == 2 or p.label == 3:
                 self.roadstd[p.linkid][p.label - 1] = self.roadstd[p.linkid][p.label - 1] + 1
-                d[p.current_slice_id][p.label - 1] = d[p.current_slice_id][p.label - 1] + 1
     def parseTimeInfo(self,his):
         for p in his:
             if p.label == 1 or p.label == 2 or p.label == 3:
@@ -33,6 +32,7 @@ class RoadStdInfo:
             for j in range(3):
                 self.timestdone[i][j] = self.timestd[i][j] / (
                             self.timestd[i][0] + self.timestd[i][1] + self.timestd[i][2] + 1e-8)
+                #print(self.timestdone[i][j])
 
 
 
@@ -79,3 +79,6 @@ def readAllHisData(filename):
         r.process(tmp)
     r.cal()
     return r
+
+#fileHisData='input/201907'
+#readHisStd(fileHisData)

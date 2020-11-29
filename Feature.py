@@ -61,12 +61,18 @@ class Example:
         tmp[pdate%7]=1
         for p in tmp:
             self.feature.append(p)
-    def AddFeature(self,h1,r1):
+    def AddFeature_Time(self,r2):
+        self.feature.append(r2[0])
+        self.feature.append(r2[1])
+        self.feature.append(r2[2])
+        #print(r2[0],r2[1],r2[2])
+    def AddFeature(self,h1,r1,r2):
         #print(r1)
         #print(r1.pathclass)
         self.AddFeature_His(h1)
         self.AddFeature_RoadInfo(r1)
         self.AddFeature_Date(h1.pdate)
+        self.AddFeature_Time(r2)
         #AddFeature_RoadInfo()
         #AddFeature_His(h1)
         #print('have end addfeature')

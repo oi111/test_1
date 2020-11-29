@@ -1,6 +1,8 @@
 
 
 import numpy as np
+import pandas as pd
+
 
 class HisData:
     linkid=0
@@ -38,6 +40,33 @@ def readHisData(filename,pindex):
     f.close()
     print('have  readHisData')
     return example
+def readAllHisData2(filename):
+    example=[]
+    a = np.zeros([1000000, 3])
+    b=np.zeros(1000000)
+    c = np.zeros(10000)
+    d=np.zeros([10000, 3])
+    for i in range(1,31,1):
+        if i<10:
+            fn=filename+'0'+str(i)+'.txt'
+        else:
+            fn=filename+str(i)+'.txt'
+        tmp=readHisData(fn,i)
+        #print(tmp)
+        for p in tmp:
+            #print(p.linkid,p.label)
+            b[p.linkid]=b[p.linkid]+1
+
+    tmp = readHisData("input/20190801_testdata.txt", i)
+    t1=0
+    t2=0
+    for p in tmp:
+        t2=t2+1
+        if b[p.linkid]==0:
+            t1=t1+1
+            print(p.linkid)
+    print(t1,t2)
+
 def readAllHisData(filename):
     example=[]
     a = np.zeros([1000000, 3])
@@ -98,5 +127,21 @@ def readAllHisData(filename):
             t3 = t3 + 1
     print('NULL point: ', tot, t1, t3)
     return example
-readAllHisData('input/201907')
+def testAllBiLi(filename,flg):
+    tmp = readHisData("input/20190801_testdata.txt", 0)
+    a=[]
+    for p in tmp:
+        g=[]
+        g.append(p.linkid)
+        g.append(p.current_slice_id)
+        g.append(p.future_slice_id)
+        g.append(flg)
+        a.append(g)
+    df=pd.DataFrame(a,columns=['link','current_slice_id','future_slice_id','label'])
+    df.to_csv(filename,index=False)
+
+
+testAllBiLi('test1.csv',1)
+testAllBiLi('test2.csv',2)
+testAllBiLi('test3.csv',3)
 

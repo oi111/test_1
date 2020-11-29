@@ -42,11 +42,11 @@ def SplitData(data,rate):
         testX.append(data[i].feature)
         testY.append(data[i].label)
     return trainX,trainY,testX,testY
-def buildExample(roadlink,roadinfo,his):
+def buildExample(roadlink,roadinfo,his,hisstd):
     ret=[]
     for h in his:
         e=ft.Example()
-        e.AddFeature(h,roadinfo[h.linkid])
+        e.AddFeature(h,roadinfo[h.linkid],hisstd.timestdone[h.current_slice_id])
         if e.label==0 or e.label==1 or e.label==2:
             ret.append(e)
     print(len(ret))
@@ -96,10 +96,10 @@ def processTrainData(trainX,trainY):
     trainX,trainY=randomData(trainX,trainY)
     return trainX,trainY
 
-def getData(roadlink,roadinfo,his):
+def getData(roadlink,roadinfo,his,hisstd):
     trainset = []
     testset = []
-    data=buildExample(roadlink,roadinfo,his)
+    data=buildExample(roadlink,roadinfo,his,hisstd)
     te.testRoadInformation(roadinfo)
     te.testHisData(his)
     calBiLi(data)
@@ -108,13 +108,13 @@ def getData(roadlink,roadinfo,his):
     calBiLi2(trainY)
     return trainX,trainY,testX,testY
 
-def getTestData(roadlink,roadinfo,fileHisData):
+def getTestData(roadlink,roadinfo,fileHisData,hisstd):
     trainset = []
     testset = []
     his = dt.readAllHisData(fileHisData)
-    data=buildExample(roadlink,roadinfo,his)
+    data=buildExample(roadlink,roadinfo,his,hisstd)
     calBiLi(data)
     finalX,finalY,testX,testY=SplitData(data,1)
     #trainX,trainY=processTrainData(trainX,trainY)
     #calBiLi2(trainY)
-    return finalX,finalY
+    return finalX,finalY,his

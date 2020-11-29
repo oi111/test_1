@@ -14,6 +14,8 @@ import Model as md
 import random
 import ProcessTrainData as ptd
 import test as te
+import Std as st
+import pandas as pd
 
 
 def weighted_f1_score(label_data, pred_data):
@@ -32,6 +34,18 @@ def calLabel(pred_y):
             ret.append(2)
     return ret
 
+
+def outputData(finalZ,pred_y):
+    a = []
+    for i in range(len(finalZ)):
+        g = []
+        g.append(finalZ[i].linkid)
+        g.append(finalZ[i].current_slice_id)
+        g.append(finalZ[i].future_slice_id)
+        g.append(pred_y[i])
+        a.append(g)
+    df = pd.DataFrame(a, columns=['link', 'current_slice_id', 'future_slice_id', 'label'])
+    df.to_csv('outputData.csv', index=False)
 def Train(model, trainX,trainY,valX,valY):
     model.train(trainX,trainY,valX,valY)
 
@@ -48,7 +62,8 @@ def getModel(model_name):
     return model
 def process(fileRoadLink,fileRoadInfo,fileHisData,fileFinalData):
     roadlink, roadinfo, his=da.readData(fileRoadLink,fileRoadInfo,fileHisData)
-    trainX,trainY,testX,testY = ptd.getData(roadlink,roadinfo,his)
+    hisstd=st.readAllHisData(fileHisData)
+    trainX,trainY,testX,testY = ptd.getData(roadlink,roadinfo,his,hisstd)
     te.testNullId(his)
     print('========================')
     model = getModel('xgb')
@@ -57,7 +72,10 @@ def process(fileRoadLink,fileRoadInfo,fileHisData,fileFinalData):
     pred_y=calLabel(pred_y)
     score=weighted_f1_score(testY,pred_y)
 
-    #finalData=ptd.getTestData(roadlink, roadinfo, fileFinalData)
+    finalX,finalY,finalZ=ptd.getTestData(roadlink, roadinfo, fileFinalData,hisstd)
+    pred_y = Test(model, finalX, finalY)
+    pred_y = calLabel(pred_y)
+    outputData(finalZ,pred_y)
     print(score)
 
 
