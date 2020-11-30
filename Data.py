@@ -145,6 +145,27 @@ def readAllHisData(filename):
 
     print('have  readAllHisData')
     return example
+def readTestHisData(filename,pindex):
+    example=[]
+    print(filename)
+    f=open(filename,"r")
+
+    index=0
+    while True:
+        line=f.readline()
+        if line:
+            index=index+1
+            #if index%31==0:
+            e=HisData(line,pindex)
+            e.label=0
+            example.append(e)
+        else:
+            break
+   # for p in example:
+      #  p.label=0
+    f.close()
+    print('have  readHisData')
+    return example
 def readData(fileRoadLink,fileRoadInfo,fileHisData):
     print('begin read data')
     roadlink=readRoadLinkInformation(fileRoadLink)

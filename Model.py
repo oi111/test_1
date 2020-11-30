@@ -23,7 +23,7 @@ class Model_XGBboost:
         _learning_rate = 0.01
         _subsample = 0.7
         _colsample_bytree = 0.7
-        self.model = XGBClassifier(n_estimators=50, max_depth=_max_depth, learning_rate=_learning_rate,
+        self.model = XGBClassifier(n_estimators=250, max_depth=_max_depth, learning_rate=_learning_rate,
                                   objective='multi:softmax', subsample=_subsample, colsample_bytree=_colsample_bytree,num_class=3)
         #print(self.model)
     def train(self,trainX,trainY,valX,valY):
@@ -41,9 +41,9 @@ class Model_XGBboost:
         print('have train')
     def test(self,testX,testY):
         y_pred = self.model.predict_proba(np.array(testX))#[:, 2]
-        print(y_pred)
-        print(testY)
-        for i in range(1000):
+        #print(y_pred)
+        #print(testY)
+        for i in range(100):
             print(y_pred[i],testY[i])
         #y_pred = model.predict(feature)
         return y_pred

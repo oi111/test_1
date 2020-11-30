@@ -47,7 +47,7 @@ def buildExample(roadlink,roadinfo,his,hisstd):
     for h in his:
         e=ft.Example()
         e.AddFeature(h,roadinfo[h.linkid],hisstd.timestdone[h.current_slice_id])
-        if e.label==0 or e.label==1 or e.label==2:
+        if e.label==0 or e.label==1 or e.label==2 or e.label==-1:
             ret.append(e)
     print(len(ret))
     print('have end buildExample')
@@ -58,7 +58,7 @@ def changeBiLi(trainX,trainY):
     py=[]
     for i in range(len(trainY)):
         if trainY[i]==2:
-            for j in range(15):
+            for j in range(35):
                 px.append(trainX[i])
                 py.append(trainY[i])
         if trainY[i]==1:
@@ -73,7 +73,7 @@ def randomGet(trainX,trainY):
     px = []
     py = []
     for i in range(len(trainY)):
-        if random.random()<0.1:
+        if random.random()<1:
             px.append(trainX[i])
             py.append(trainY[i])
     return px,py
@@ -111,9 +111,13 @@ def getData(roadlink,roadinfo,his,hisstd):
 def getTestData(roadlink,roadinfo,fileHisData,hisstd):
     trainset = []
     testset = []
-    his = dt.readAllHisData(fileHisData)
+    #print(fileHisData)
+    his = dt.readTestHisData(fileHisData,0)
+    #print(his)
     data=buildExample(roadlink,roadinfo,his,hisstd)
-    calBiLi(data)
+    #print(data)
+
+    #calBiLi(data)
     finalX,finalY,testX,testY=SplitData(data,1)
     #trainX,trainY=processTrainData(trainX,trainY)
     #calBiLi2(trainY)

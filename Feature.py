@@ -72,7 +72,7 @@ class Example:
         self.AddFeature_His(h1)
         self.AddFeature_RoadInfo(r1)
         self.AddFeature_Date(h1.pdate)
-        self.AddFeature_Time(r2)
+        #self.AddFeature_Time(r2)
         #AddFeature_RoadInfo()
         #AddFeature_His(h1)
         #print('have end addfeature')
